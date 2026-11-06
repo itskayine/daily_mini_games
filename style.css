@@ -66,3 +66,7 @@ svg.map,svg.gp{touch-action:none}svg.gp{width:100%;background:var(--card);border
 .row{grid-template-columns:repeat(var(--L,5),1fr)}
 .boards.o{grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;width:100%}.o .t{font-size:11px;border-width:1px;min-width:12px;border-radius:3px}.o .row{gap:2px;margin-bottom:2px}
 .boards.wide{width:min(460px,100%)}
+
+.boards.o{grid-template-columns:repeat(4,1fr);gap:16px 10px;width:100%}@media(max-width:560px){.boards.o{grid-template-columns:repeat(2,1fr)}}
+.swg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}.sw{height:130px;border-radius:14px;border:1px solid var(--bd)}.swg small{display:block;text-align:center;margin-top:6px;color:var(--mut)}
+.seg{display:flex;gap:6px;margin:8px 0}.seg button{flex:1;padding:8px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);font-weight:700;cursor:pointer}.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}.rgbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
