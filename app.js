@@ -1,0 +1,44 @@
+
+const app=document.getElementById('app');
+const day=Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5);
+const rng=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const R=k=>rng(day*97+k*7919);
+const shuf=(a,r)=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const S={get(k){try{return JSON.parse(localStorage.getItem(k))}catch{return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+let off=null;const go=f=>{if(off)off();off=null;f()};
+const W="ABOUT ALARM BEACH BRAIN CANDY CRANE DREAM EARTH FLAME GLASS HEART IVORY JOKER KNIFE LEMON MANGO NIGHT OCEAN PIANO QUEEN RIVER STONE TIGER UNITY VIVID WATER YOUTH ZEBRA APPLE BREAD CLOUD DANCE EAGLE FROST GRAPE HOUSE IMAGE JELLY LIGHT MUSIC NOBLE OLIVE PLANT QUIET ROBOT SUGAR TRAIN URBAN VOICE WORLD AMBER BLAZE CHESS DELTA EMBER FABLE GHOST HONEY INDEX JEWEL KARMA LUNAR MAPLE NORTH ORBIT PEARL QUEST RADAR SOLAR TEMPO ULTRA VAULT WHEAT PIXEL SHARK SPICE TOWER MOUSE BLOOM CRISP DRIFT FLINT GRAIN HAZEL".split(" ");
+const C=[["France",68,644],["Germany",84,358],["Japan",124,378],["Brazil",216,8516],["India",1429,3287],["Canada",40,9985],["Australia",26,7692],["Egypt",112,1002],["Nigeria",224,924],["Mexico",128,1964],["Italy",59,301],["Spain",48,506],["Argentina",46,2780],["Kenya",55,580],["Norway",5.5,385],["Poland",37,313],["Turkey",85,784],["Indonesia",277,1905],["Russia",144,17098],["China",1412,9597],["USA",335,9834],["UK",68,243],["Chile",19.6,756],["Peru",34,1285],["Vietnam",99,331]];
+const O=[["Mount Everest",8849],["Burj Khalifa",828],["Eiffel Tower",330],["Statue of Liberty",93],["Boeing 747",70.6],["Olympic pool",50],["Blue whale",25],["School bus",12],["Giraffe",5.5],["Great white shark",6.1],["Adult human",1.7],["House cat",.46],["Pencil",.19],["Ant",.005],["Football pitch",105],["Tennis court",23.8]];
+const GAMES=[["wordle","🟩","Wordle","Guess the 5-letter word"],["quordle","🟦","Quordle","Four words at once"],["octordle","🎱","Octordle","Eight words at once"],["wordle6","6️⃣","Wordle 6","Six-letter words"],["wordle4","4️⃣","Wordle 4","Four-letter words"],["more","⬆️","More or Less","Which country has more people?"],["georank","🌍","Georankle","Rank countries by a stat"],["worldle","🧭","Worldle","Find the country: distance + direction"],["maptap","📍","MapTap","Tap places on the map"],["graph","📈","Graph It","Which story is this graph?"],["krillion","🦐","Krillion","Least guessable guess wins"],["wonderhop","🐇","Wonderhop","Oldest, newest, most obvious"]];
+const SOON=[];
+const fin=(g,win,text)=>{let s=S.get('st-'+g)||{streak:0,best:0,played:0,last:-9,win:false};if(s.last!==day){s.streak=win?((s.last===day-1&&s.win)?s.streak+1:1):0;s.win=win;s.last=day;s.played++;s.best=Math.max(s.best,s.streak);S.set('st-'+g,s)}S.set('res-'+g,{d:day,text});return s};
+const done=g=>{const r=S.get('res-'+g);return r&&r.d===day?r:null};
+function hub(){app.innerHTML=`<div class="top"><span></span><button class="ghost" id="th">◐ Theme</button></div><h1>Daily <b>Puzzles</b></h1><p class="sub">Fresh puzzles every day. Same for everyone. Day #${day-20000}.</p><div class="grid">${GAMES.map(([id,e,n,d])=>{const s=S.get('st-'+id)||{streak:0};return`<div class="cw"><button class="card" data-g="${id}">${done(id)?'<span class="tag">✓ DONE</span>':''}<span class="e">${e}</span><b>${n}</b><small>${d}</small><small>🔥 ${s.last===day||s.last===day-1?s.streak:0} day streak</small></button><button class="rst" data-r="${id}" title="Reset today's puzzle">↺ Reset</button></div>`}).join('')}${SOON.map(([e,n])=>`<div class="card soon"><span class="e">${e}</span><b>${n}</b><small>Coming soon</small></div>`).join('')}</div>`;
+app.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const g=b.dataset.r,n=GAMES.find(x=>x[0]===g)[2];if(!confirm('Reset today\'s '+n+'? Today\'s progress and result will be cleared.'))return;try{['res-'+g,'s-'+g,'s-wd'].filter(k=>k!=='s-wd'||g==='worldle').forEach(k=>localStorage.removeItem(k))}catch(e){}hub()});
+app.querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>go(()=>play(b.dataset.g)));
+document.getElementById('th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'}}
+function play(g){({wordle:()=>words('wordle','Wordle',1,6),quordle:()=>words('quordle','Quordle',4,9),octordle:()=>words('octordle','Octordle',8,13),wordle6:()=>words('wordle6','Wordle 6',1,7,6),wordle4:()=>words('wordle4','Wordle 4',1,6,4),more:more,georank:()=>rank('georank','Georankle'),worldle:worldle,maptap:maptap,graph:graph,krillion:()=>pick('krillion','Krillion'),wonderhop:()=>pick('wonderhop','Wonderhop')})[g]()}
+const head=t=>`<div class="top"><button class="ghost" id="bk">← Back</button><b>${t}</b><span></span></div>`;
+const bk=()=>{const b=document.getElementById('bk');if(b)b.onclick=()=>go(hub)};
+function share(g,title,text){const r=done(g)||{text};return`<div class="res"><b>${title} #${day-20000}</b>\n${r.text}\n<br><button class="btn" id="sh">Share result</button></div><p class="c" style="color:var(--mut)">New puzzles at midnight.</p>`}
+function wireShare(title,text){const b=document.getElementById('sh');if(b)b.onclick=async()=>{const t=title+' #'+(day-20000)+'\n'+text;try{await navigator.clipboard.writeText(t);b.textContent='Copied!'}catch{b.textContent='Copy blocked'}}}
+function more(){const seq=shuf(C,R(3)).slice(0,12);let i=0,sc=0;
+const fmt=v=>v.toLocaleString()+' M';
+function over(txt){fin('more',sc>=5,txt);app.innerHTML=head('More or Less')+`<div class="big">${sc}</div><p class="c">correct in a row</p>`+share('more','More or Less',txt);bk();wireShare('More or Less',txt)}
+if(done('more')){return over(done('more').text)}
+function draw(){const a=seq[i],b=seq[i+1];app.innerHTML=head('More or Less')+`<p class="c">Streak: <b>${sc}</b></p><div class="vs"><div class="side"><b>${a[0]}</b><div class="v">${fmt(a[1])}</div><small>population</small></div><div class="side"><b>${b[0]}</b><div class="v" id="bv">?</div><small>has…</small></div><button class="btn" data-a="1">⬆ More</button><button class="btn" data-a="0">⬇ Less</button></div>`;bk();
+app.querySelectorAll('[data-a]').forEach(x=>x.onclick=()=>{const m=b[1]>a[1];const ok=(x.dataset.a==='1')===m;document.getElementById('bv').textContent=fmt(b[1]);app.querySelectorAll('[data-a]').forEach(y=>y.disabled=true);setTimeout(()=>{if(ok){sc++;i++;if(i>=seq.length-1)over(`Perfect run! ${sc} correct 🔥`);else draw()}else over(`Streak of ${sc} ${'🟩'.repeat(sc)}🟥`)},1100)})}
+draw()}
+function rank(g,title){const r=R(g==='size'?4:5);const rounds=[];
+for(let k=0;k<5;k++){if(g==='size'){rounds.push({q:'Rank from LARGEST to smallest (height/length)',it:shuf(O,r).slice(0,5).map(x=>({n:x[0],v:x[1]})),f:v=>v+' m'})}else{const pop=k!==1;rounds.push({q:pop?'Rank by POPULATION, most to fewest':'Rank by AREA, largest to smallest',it:shuf(C,r).slice(0,5).map(x=>({n:x[0],v:pop?x[1]:x[2]})),f:v=>pop?v+' M':v.toLocaleString()+' k km²'})}}
+let k=0,tot=0,marks=[];
+if(done(g)){const d=done(g);app.innerHTML=head(title)+share(g,title,d.text);bk();return wireShare(title,d.text)}
+function draw(){const rd=rounds[k];let pick=[];
+const view=()=>{app.innerHTML=head(title)+`<p class="c"><b>Round ${k+1}/5</b><br>${rd.q}<br><small style="color:var(--mut)">Tap in order, first = top</small></p>`+rd.it.map((x,i)=>`<button class="opt" data-i="${i}">${pick.includes(i)?`<span class="n">${pick.indexOf(i)+1}</span>`:''}${x.n}</button>`).join('')+'<button class="ghost" id="rs">Reset</button>';bk();
+document.getElementById('rs').onclick=()=>{pick=[];view()};
+app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;if(pick.includes(i))return;pick.push(i);if(pick.length<5)view();else check(pick)})};
+view()}
+function check(pick){const rd=rounds[k];const cor=[0,1,2,3,4].sort((a,b)=>rd.it[b].v-rd.it[a].v);let s=0;marks.push(pick.map((p,i)=>{if(cor[i]===p){s++;return'🟩'}return'🟥'}).join(''));tot+=s;
+app.innerHTML=head(title)+`<p class="c"><b>Round ${k+1}: ${s}/5</b></p>`+cor.map((c,i)=>`<div class="opt ${pick[i]===c?'ok':'bad'}"><span class="n">${i+1}</span>${rd.it[c].n}<span class="v">${rd.f(rd.it[c].v)}</span></div>`).join('')+'<button class="btn" id="nx" style="width:100%">'+(k<4?'Next round':'See result')+'</button>';bk();
+document.getElementById('nx').onclick=()=>{if(k<4){k++;draw()}else{const t=`Score ${tot}/25\n`+marks.join('\n');fin(g,tot>=15,t);app.innerHTML=head(title)+`<div class="big">${tot}/25</div>`+share(g,title,t);bk();wireShare(title,t)}}}
+draw()}
