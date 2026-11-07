@@ -23,22 +23,6 @@ const ESSAY={
 // Brevo email signup form (shown in the pop-up)
 const FORM_URL="https://50f0f619.sibforms.com/v2/serve/MUIFAM9LFLyf9YdY6ShQHi297KiZgC2mukTtVShe5dsNX-pgj6TvIeMClEutMJZJgnE8d9HUlqzHOGqg6ck7S7A-TDO4GkjnYI4NaPRCdkO6DRBSJp_pOpK1OUPFeX_AFKlcdBdpa7ujqPdGnvqR_xwbtGmCRLJTY5ri4UG3zcM8mPHPd0wyIZR3eP7mCHoromWR1uz4j1SGKf-0Hw==";
 
-// Words from Chapter 1 of the novel: one per day, cycling.
-const WORDS=[
-  ["discombobulated","confused and thrown off balance","…was now discombobulated by this strange awakening."],
-  ["dubitative","expressing or feeling doubt","…he thought, dubitative."],
-  ["aperture","a small opening or gap","…the little aperture under the bedroom’s door."],
-  ["emanating","coming out from a source","…a rather dim light emanating from there."],
-  ["punctuality","the habit of being on time","…an adept of punctuality, he had a really tight schedule."],
-  ["circa","around, approximately (used with dates and times)","…as soon as he finished his work, circa 8pm."],
-  ["ravishing","strikingly beautiful or delightful","…an absolutely ravishing white shirt."],
-  ["indifferent","not caring about something","…indifferent to the judgment of others."],
-  ["tremendous","extremely great in size or degree","…despite his tremendous vocabulary."],
-  ["deficiency","a lack of something that is needed","…recover from the deficiency he was suffering from."],
-  ["unscheduled","not planned in advance","…has left him unscheduled free time."],
-  ["routine","a fixed, habitual way of doing things","He was a man of routine."]
-];
-
 // Link to the novel site, tagged so the visit shows up in your analytics.
 const nu=(page,medium)=>NOVEL.base+page+"?utm_source=daily-puzzles&utm_medium="+medium+"&utm_campaign=novel";
 
@@ -48,12 +32,6 @@ function trk(name){try{if(window.goatcounter&&typeof goatcounter.count==="functi
 // Compact novel card: after game 6 on the home screen (small screens only) and on result screens.
 function novelBanner(place,hubOnly){
   return `<div class="nb${hubOnly?" hubonly":""}"><img src="${NOVEL.cover}" alt="Cover of ${NOVEL.title}" loading="lazy"><div><div class="tg">The novel · launching soon</div><h3>${NOVEL.title}</h3><p>${NOVEL.hook}</p><div class="nbb"><a class="pbtn" href="#" data-notify data-src="${place}">${NOVEL.cta}</a><a class="plnk" href="${nu("chapter-1.html",place)}" target="_blank" rel="noopener" data-trk="chapter1-click-${place}">${NOVEL.chapter}</a></div></div></div>`;
-}
-
-// Word of the day from the novel (home screen).
-function wotd(){
-  const n=WORDS.length,w=WORDS[(((DAYNO-1)%n)+n)%n];
-  return `<section class="wotd"><div class="tg">Word of the day · from Chapter 1</div><h3>${w[0]}</h3><p class="def">${w[1]}</p><p class="ln">${w[2]}</p><a class="plnk" href="${nu("chapter-1.html","wotd")}" target="_blank" rel="noopener" data-trk="chapter1-click-wotd">Read it in context →</a></section>`;
 }
 
 // Footer of the home screen.

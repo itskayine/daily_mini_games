@@ -128,8 +128,6 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--act);outline-offset
 .hubgrid .card .ds{min-height:2.8em}.hubgrid .card .stk{min-height:1.4em}
 .cw:not(.is-done) .card{border-color:color-mix(in srgb,var(--ac) 60%,var(--bd))}
 .cw.is-done .card{opacity:.78}.cw.is-done .card:hover{opacity:1}
-.wotd{max-width:520px;margin:28px auto 0;padding:18px;text-align:center;background:var(--card);border:1px solid var(--bd);border-radius:16px}
-.wotd h3{font:800 28px/1.1 Georgia,serif;margin:6px 0}.wotd .def{margin:0 0 8px}.wotd .ln{margin:0 0 10px;color:var(--mut);font:italic 500 15px/1.4 Georgia,serif}
 .sf{display:flex;gap:14px;align-items:center;max-width:620px;margin:32px auto 0;padding-top:20px;border-top:1px solid var(--bd);color:var(--mut);font-size:14px;text-align:left}
 .sf img{width:56px;border-radius:5px;flex:none;box-shadow:0 6px 16px #0004}.sf p{margin:0 0 6px}.sf a{color:var(--act);font-weight:600}
 
